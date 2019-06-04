@@ -1,0 +1,80 @@
+#
+# docker-compose.yml
+# This file is part of Vivarium.
+#
+# Copyright (C) 2019 Jeffery To
+# https://github.com/jefferyto/openwrt-vivarium
+#
+# Vivarium is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Vivarium is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+version: "3"
+
+services:
+  builder:
+    build:
+      context: .
+      dockerfile: builder/Dockerfile
+      args:
+        # Which SDK to use
+        # If an SDK archive (matching SDK_FILE) is in the "sdk/sdk"
+        # directory, it will be used instead of downloading the archive
+        # from SDK_HOST
+        SDK_HOST: downloads.openwrt.org
+        SDK_PATH: snapshots/targets/ath79/generic
+        SDK_FILE: openwrt-sdk-ath79-generic_*.Linux-x86_64.tar.xz
+
+        # Which branch to use when setting up package feeds, e.g.
+        # master, openwrt-18.06, etc.
+        BRANCH: master
+
+        # Controls how the "packages" directory is used
+        # - n: The directory is added as the "packages" feed, in place
+        #      of the OpenWrt packages feed
+        # - y: The directory is added as a custom feed (the OpenWrt
+        #      packages feed will be present as well)
+        CUSTOM_FEED: n
+
+    environment:
+      # If y, the SDK archive within the Docker image will be copied to
+      # the "sdk/sdk" directory when the builder is run
+      KEEP_SDK_FILE: n
+
+      # Sets the corresponding config options (y or n)
+      CONFIG_AUTOREMOVE: y
+      CONFIG_BUILD_LOG: n
+
+    volumes:
+      # Where modified/custom packages should be placed;
+      # if CUSTOM_FEED is n, this should be a copy of the OpenWrt
+      # packages feed (https://github.com/openwrt/packages)
+      - "./packages:/home/build/openwrt_packages"
+
+      # Where the SDK archive is loaded from and/or saved to
+      - "./sdk/sdk:/home/build/sdk"
+
+      # Contains build artifacts
+      - "./sdk/bin:/home/build/build_dir/bin"
+      - "./sdk/build_dir:/home/build/build_dir/build_dir"
+      - "./sdk/dl:/home/build/build_dir/dl"
+      - "./sdk/feeds:/home/build/build_dir/feeds"
+      - "./sdk/logs:/home/build/build_dir/logs"
+      - "./sdk/package/feeds:/home/build/build_dir/package/feeds"
+      - "./sdk/staging_dir/hostpkg:/home/build/build_dir/staging_dir/hostpkg"
+      - "./sdk/staging_dir/target:/home/build/build_dir/staging_dir/target"
+      - "./sdk/tmp:/home/build/build_dir/tmp"
+
+      # Files in overrides will be copied into the sdk/build directory
+      # directly; if there is a file named "diffconfig", it will be
+      # copied to ".config", then expanded by "make defconfig"
+      - "./sdk/overrides:/home/build/overrides"
