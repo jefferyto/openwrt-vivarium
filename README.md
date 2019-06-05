@@ -57,7 +57,7 @@ Testing with other platforms is welcome.
 
 4.  Build packages by using `docker-compose run`, e.g.:
 
-        $ sudo docker-composer run --rm builder make package/python/compile V=s
+        $ sudo docker-compose run --rm builder make package/python/compile V=s
 
     If the build was successful, the compiled package(s) will be in the
     `sdk/bin` directory.
