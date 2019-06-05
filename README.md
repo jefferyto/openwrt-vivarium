@@ -33,17 +33,23 @@ Testing with other platforms is welcome.
 
 ## Getting started
 
-1.  Download the source code and extract.
+1.  Download the source code
+    ([zip](https://github.com/jefferyto/openwrt-vivarium/archive/master.zip)
+    or
+    [tar.gz](https://github.com/jefferyto/openwrt-vivarium/archive/master.tar.gz))
+    and extract, e.g.:
+
+        $ unzip openwrt-vivarium-master.zip
 
     If you will be using Git to manage your package source code, then
-    you will want to download Vivarium as a zip or tar.gz to avoid
-    nesting Git repositories.
+    you will want to download Vivarium without Git to avoid nesting Git
+    repositories.
 
 2.  In the project directory, create a `packages` directory and add
     source code for packages, e.g. by checking out the OpenWrt packages
     feed:
 
-        $ cd openwrt-vivarium
+        $ cd openwrt-vivarium-master
         $ git clone https://github.com/openwrt/packages.git
 
 3.  If you are using Linux and your user ID is not 1000, you will need
