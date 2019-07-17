@@ -34,8 +34,28 @@ if [ -z "$(find / -mindepth 1 -maxdepth 1 -name "$SDK_FILE" -print -quit)" ]; th
 
 	# From https://github.com/openwrt/packages/blob/master/.circleci/config.yml
 	curl "https://$SDK_HOST/$SDK_PATH/sha256sums" -sS -o sha256sums
-	curl "https://$SDK_HOST/$SDK_PATH/sha256sums.asc" -sS -o sha256sums.asc
-	gpg --with-fingerprint --verify sha256sums.asc sha256sums
+	curl "https://$SDK_HOST/$SDK_PATH/sha256sums.asc" -fs -o sha256sums.asc || true
+	curl "https://$SDK_HOST/$SDK_PATH/sha256sums.sig" -fs -o sha256sums.sig || true
+	if [ ! -f sha256sums.asc ] && [ ! -f sha256sums.sig ]; then
+		echo "Missing sha256sums signature files"
+		exit 1
+	fi
+	[ ! -f sha256sums.asc ] || gpg --with-fingerprint --verify sha256sums.asc sha256sums
+	if [ -f sha256sums.sig ]; then
+		VERIFIED=
+		for KEY in ../usign/*; do
+			echo "Trying $KEY..."
+			if signify-openbsd -V -q -p "$KEY" -x sha256sums.sig -m sha256sums; then
+				echo "...verified"
+				VERIFIED=1
+				break
+			fi
+		done
+		if [ -z "$VERIFIED" ]; then
+			echo "Could not verify usign signature"
+			exit 1
+		fi
+	fi
 	rsync -av "$SDK_HOST::downloads/$SDK_PATH/$SDK_FILE" .
 	sha256sum -c --ignore-missing sha256sums
 
