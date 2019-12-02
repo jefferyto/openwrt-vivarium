@@ -1,6 +1,8 @@
 # Changelog
 
 ## [0.1.2-dev][Unreleased] - Unreleased
+* Update to v1.0.5 of the packages-cci Docker image (includes public
+  keys for 19.07)
 
 ## [0.1.1] - 2019-07-18
 * Added support for usign signatures
