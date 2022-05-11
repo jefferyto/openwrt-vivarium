@@ -18,7 +18,7 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-FROM docker.io/openwrtorg/packages-cci:v1.0.5
+FROM docker.io/openwrtorg/packages-cci:v1.0.6
 
 ARG SDK_HOST
 ARG SDK_PATH

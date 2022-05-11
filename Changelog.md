@@ -1,6 +1,8 @@
 # Changelog
 
 ## [0.1.3-dev][Unreleased] - Unreleased
+* Update to v1.0.6 of the packages-cci Docker image (includes public
+  keys for 21.02)
 
 ## [0.1.2] - 2019-12-02
 * Update to v1.0.5 of the packages-cci Docker image (includes public
