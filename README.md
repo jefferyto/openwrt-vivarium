@@ -42,10 +42,10 @@ Testing with other platforms is welcome.
 
 ## Getting started
 
-1.  Download the source code ([zip][Vivarium zip] or
-    [tar.gz][Vivarium tar.gz]) and extract, e.g.:
+1.  Download the [latest release][Vivarium latest release] and extract,
+    e.g.:
 
-        $ unzip openwrt-vivarium-master.zip
+        $ unzip openwrt-vivarium-0.1.3.zip
 
     If you will be using Git to manage your package source code, then
     you will want to download Vivarium without Git to avoid nesting Git
@@ -55,7 +55,7 @@ Testing with other platforms is welcome.
     source code for packages, e.g. by checking out the OpenWrt packages
     feed:
 
-        $ cd openwrt-vivarium-master
+        $ cd openwrt-vivarium-0.1.3
         $ git clone https://github.com/openwrt/packages.git
 
 3.  If you are using Linux and your user ID is not 1000, you will need
@@ -100,8 +100,7 @@ During each builder run, these SDK commands:
 will be run before the command specified on the `docker-compose run`
 command line.
 
-[Vivarium zip]: https://github.com/jefferyto/openwrt-vivarium/archive/master.zip
-[Vivarium tar.gz]: https://github.com/jefferyto/openwrt-vivarium/archive/master.tar.gz
+[Vivarium latest release]: https://github.com/jefferyto/openwrt-vivarium/releases/latest
 
 ## Directory structure
 
