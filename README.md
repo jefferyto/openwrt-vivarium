@@ -45,7 +45,7 @@ Testing with other platforms is welcome.
 1.  Download the [latest release][Vivarium latest release] and extract,
     e.g.:
 
-        $ unzip openwrt-vivarium-0.1.3.zip
+        $ unzip openwrt-vivarium-0.1.4.zip
 
     If you will be using Git to manage your package source code, then
     you will want to download Vivarium without Git to avoid nesting Git
@@ -55,7 +55,7 @@ Testing with other platforms is welcome.
     source code for packages, e.g. by checking out the OpenWrt packages
     feed:
 
-        $ cd openwrt-vivarium-0.1.3
+        $ cd openwrt-vivarium-0.1.4
         $ git clone https://github.com/openwrt/packages.git
 
 3.  If you are using Linux and your user ID is not 1000, you will need

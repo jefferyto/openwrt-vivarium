@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.4-dev][Unreleased] - Unreleased
+## [0.1.4] - 2022-05-30
 * Update to v1.0.7 of the packages-cci Docker image (includes public
   keys for 22.03)
 
@@ -19,7 +19,7 @@
 * Initial release
 
 
-[Unreleased]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.3...main
+[0.1.4]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.3...0.1.4
 [0.1.3]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.2...0.1.3
 [0.1.2]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.1...0.1.2
 [0.1.1]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.0...0.1.1
