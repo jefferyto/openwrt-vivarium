@@ -82,13 +82,13 @@ for path in build_dir_default/target-*; do
 	ln -s target staging_dir/$(basename $path)
 done
 
-echo "src-git base https://github.com/openwrt/openwrt.git;$BRANCH" > feeds.conf
+echo "src-git-full base https://github.com/openwrt/openwrt.git;$BRANCH" > feeds.conf
 if [ "$CUSTOM_FEED" = y ]; then
-	echo "src-git packages https://github.com/openwrt/packages.git;$BRANCH" >> feeds.conf
+	echo "src-git-full packages https://github.com/openwrt/packages.git;$BRANCH" >> feeds.conf
 	echo "src-link custom $HOME/openwrt_packages" >> feeds.conf
 else
 	echo "src-link packages $HOME/openwrt_packages" >> feeds.conf
 fi
-echo "src-git luci https://github.com/openwrt/luci.git;$BRANCH" >> feeds.conf
+echo "src-git-full luci https://github.com/openwrt/luci.git;$BRANCH" >> feeds.conf
 
 cat feeds.conf
