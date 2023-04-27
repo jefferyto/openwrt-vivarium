@@ -24,70 +24,22 @@
 # Copyright (C) 2018 Etienne Champetier, Ted Hess
 #
 
-cd $HOME
-
-if [ -z "$(find / -mindepth 1 -maxdepth 1 -name "$SDK_FILE" -print -quit)" ]; then
-	echo "Download the SDK"
-
-	mkdir sdk_dl
-	cd sdk_dl
-
-	# From https://github.com/openwrt/packages/blob/master/.circleci/config.yml
-	curl "https://$SDK_HOST/$SDK_PATH/sha256sums" -sS -o sha256sums
-	curl "https://$SDK_HOST/$SDK_PATH/sha256sums.asc" -fs -o sha256sums.asc || true
-	curl "https://$SDK_HOST/$SDK_PATH/sha256sums.sig" -fs -o sha256sums.sig || true
-	if [ ! -f sha256sums.asc ] && [ ! -f sha256sums.sig ]; then
-		echo "Missing sha256sums signature files"
-		exit 1
-	fi
-	[ ! -f sha256sums.asc ] || gpg --with-fingerprint --verify sha256sums.asc sha256sums
-	if [ -f sha256sums.sig ]; then
-		VERIFIED=
-		for KEY in ../usign/*; do
-			echo "Trying $KEY..."
-			if signify-openbsd -V -q -p "$KEY" -x sha256sums.sig -m sha256sums; then
-				echo "...verified"
-				VERIFIED=1
-				break
-			fi
-		done
-		if [ -z "$VERIFIED" ]; then
-			echo "Could not verify usign signature"
-			exit 1
-		fi
-	fi
-	rsync -av "$SDK_HOST::downloads/$SDK_PATH/$SDK_FILE" .
-	sha256sum -c --ignore-missing sha256sums
-
-	cd ..
-	ln -s sdk_dl/$SDK_FILE ./
-
-else
-	echo "Use saved SDK"
-
-	ln -s /$SDK_FILE ./
-fi
-
-echo "Prepare build_dir"
-
-mkdir build_dir
-cd build_dir
-
-tar Jxf ../$SDK_FILE --strip=1
-
 mv build_dir build_dir_default
 
-mkdir staging_dir/target
-for path in build_dir_default/target-*; do
-	ln -s target staging_dir/$(basename $path)
+mv staging_dir staging_dir_working
+mkdir staging_dir_default
+ln -s ../staging_dir/hostpkg staging_dir_working/
+for path in staging_dir_working/target-*; do
+	mv "$path" staging_dir_default/
+	ln -s "../staging_dir/${path##*/}" "$path"
 done
 
 echo "src-git-full base https://github.com/openwrt/openwrt.git;$BRANCH" > feeds.conf
 if [ "$CUSTOM_FEED" = y ]; then
 	echo "src-git-full packages https://github.com/openwrt/packages.git;$BRANCH" >> feeds.conf
-	echo "src-link custom $HOME/openwrt_packages" >> feeds.conf
+	echo "src-link custom /vivarium/packages" >> feeds.conf
 else
-	echo "src-link packages $HOME/openwrt_packages" >> feeds.conf
+	echo "src-link packages /vivarium/packages" >> feeds.conf
 fi
 echo "src-git-full luci https://github.com/openwrt/luci.git;$BRANCH" >> feeds.conf
 

@@ -23,8 +23,8 @@
 
 . ./dirclean.sh
 
-rm -rf feeds/* package/feeds/*
-rm -rf dl/* sdk/*
-rm -rf tmp/..?* tmp/.[!.]* tmp/*
+rm -fr feeds/* package/feeds/*
+rm -fr dl/*
+rm -fr tmp/..?* tmp/.[!.]* tmp/*
 
 touch tmp/.gitkeep

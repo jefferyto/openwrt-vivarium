@@ -21,4 +21,4 @@
 
 [ "${0%/*}" = . ] || exit 1
 
-rm -rf build_dir/target-* staging_dir/target/* bin/* logs/*
+rm -fr build_dir/target-* staging_dir/target-* bin/* logs/*

@@ -19,18 +19,22 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-cd $HOME
-
-if [ "$KEEP_SDK_FILE" = y ] && [ -d sdk ]; then
-	cp -np $SDK_FILE sdk/
-fi
-
-cd build_dir
-
 mkdir -p build_dir
 for path in build_dir_default/*; do
-	if [ ! -d build_dir/$(basename $path) ]; then
-		cp -pr $path build_dir/
+	if [ ! -e "build_dir/${path##*/}" ]; then
+		cp -pr "$path" build_dir/
+	fi
+done
+
+mkdir -p staging_dir/hostpkg
+for path in staging_dir_default/*; do
+	if [ ! -e "staging_dir/${path##*/}" ]; then
+		cp -pr "$path" staging_dir/
+	fi
+done
+for path in staging_dir_working/host staging_dir_working/toolchain-*; do
+	if [ ! -e "staging_dir/${path##*/}" ]; then
+		ln -s "../staging_dir_working/${path##*/}" "staging_dir/${path##*/}"
 	fi
 done
 
@@ -39,8 +43,8 @@ sed -i \
 	-e "/\s*config BUILD_LOG$/{n;n;s/default [yn]/default ${CONFIG_BUILD_LOG:-n}/}" \
 	Config.in
 
-if [ -d ../overrides ] && [ -n "$(find ../overrides -mindepth 1 -maxdepth 1 \! -path '*/.*' -name '*' -print -quit)" ]; then
-	cp -fpr ../overrides/* ./
+if [ -d /vivarium/overrides ] && [ -n "$(find /vivarium/overrides -mindepth 1 -maxdepth 1 \! -path '*/.*' -name '*' -print -quit)" ]; then
+	cp -fpr /vivarium/overrides/* ./
 fi
 
 ./scripts/feeds update -a
@@ -55,6 +59,6 @@ make defconfig
 mkdir -p logs
 cp -f .config logs/config
 
-if [ $# -gt 0 ]; then
+if [ "$#" -gt 0 ]; then
 	"$@"
 fi

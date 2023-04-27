@@ -26,17 +26,15 @@ services:
       context: .
       dockerfile: builder/Dockerfile
       args:
-        # Which SDK to use
-        # If an SDK archive (matching SDK_FILE) is in the "sdk/sdk"
-        # directory, it will be used instead of downloading the archive
-        # from SDK_HOST
-        SDK_HOST: downloads.openwrt.org
-        SDK_PATH: snapshots/targets/ath79/generic
-        SDK_FILE: openwrt-sdk-ath79-generic_*.Linux-x86_64.tar.xz
+        # Which SDK image to use
+        # Available tags can be found at
+        # https://hub.docker.com/r/openwrt/sdk/tags
+        CONTAINER: openwrt/sdk
+        TAG: ath79-generic-v22.03.4
 
-        # Which branch to use when setting up package feeds, e.g.
-        # master, openwrt-18.06, etc.
-        BRANCH: master
+        # Which branch to use when setting up package feeds,
+        # e.g. master, openwrt-22.03, etc.
+        BRANCH: openwrt-22.03
 
         # Controls how the "packages" directory is used
         # - n: The directory is added as the "packages" feed, in place
@@ -46,10 +44,6 @@ services:
         CUSTOM_FEED: n
 
     environment:
-      # If y, the SDK archive within the Docker image will be copied to
-      # the "sdk/sdk" directory when the builder is run
-      KEEP_SDK_FILE: n
-
       # Sets the corresponding config options (y or n)
       CONFIG_AUTOREMOVE: y
       CONFIG_BUILD_LOG: n
@@ -58,23 +52,19 @@ services:
       # Where modified/custom packages should be placed;
       # if CUSTOM_FEED is n, this should be a copy of the OpenWrt
       # packages feed (https://github.com/openwrt/packages)
-      - "./packages:/home/build/openwrt_packages"
-
-      # Where the SDK archive is loaded from and/or saved to
-      - "./sdk/sdk:/home/build/sdk"
+      - "./packages:/vivarium/packages"
 
       # Contains build artifacts
-      - "./sdk/bin:/home/build/build_dir/bin"
-      - "./sdk/build_dir:/home/build/build_dir/build_dir"
-      - "./sdk/dl:/home/build/build_dir/dl"
-      - "./sdk/feeds:/home/build/build_dir/feeds"
-      - "./sdk/logs:/home/build/build_dir/logs"
-      - "./sdk/package/feeds:/home/build/build_dir/package/feeds"
-      - "./sdk/staging_dir/hostpkg:/home/build/build_dir/staging_dir/hostpkg"
-      - "./sdk/staging_dir/target:/home/build/build_dir/staging_dir/target"
-      - "./sdk/tmp:/home/build/build_dir/tmp"
+      - "./sdk/bin:/builder/bin"
+      - "./sdk/build_dir:/builder/build_dir"
+      - "./sdk/dl:/builder/dl"
+      - "./sdk/feeds:/builder/feeds"
+      - "./sdk/logs:/builder/logs"
+      - "./sdk/package/feeds:/builder/package/feeds"
+      - "./sdk/staging_dir:/builder/staging_dir"
+      - "./sdk/tmp:/builder/tmp"
 
       # Files in overrides will be copied into the sdk/build directory
       # directly; if there is a file named "diffconfig", it will be
       # copied to ".config", then expanded by "make defconfig"
-      - "./sdk/overrides:/home/build/overrides"
+      - "./sdk/overrides:/vivarium/overrides"

@@ -9,8 +9,8 @@ install the necessary [build tools][OpenWrt build system install], using
 [Docker].
 
 Vivarium includes a "builder" Dockerfile for a local Docker image, based
-on the CircleCI Docker image used by the [OpenWrt packages feed]. This
-local image will have the [OpenWrt SDK] set up inside.
+on the [OpenWrt SDK Docker image]. This local image will have the
+[OpenWrt SDK] set up inside.
 
 This also includes a Docker Compose file that holds all of the
 configuration options. The Compose file also sets up a number of bind
@@ -20,7 +20,7 @@ and access to build artifacts from the host machine.
 [OpenWrt]: https://openwrt.org/
 [OpenWrt build system install]: https://openwrt.org/docs/guide-developer/build-system/install-buildsystem
 [Docker]: https://www.docker.com/
-[OpenWrt packages feed]: https://github.com/openwrt/packages
+[OpenWrt SDK Docker image]: https://github.com/openwrt/docker#sdk
 [OpenWrt SDK]: https://openwrt.org/docs/guide-developer/using_the_sdk
 
 ## Requirements
@@ -132,15 +132,12 @@ command line.
 
     *   `sdk/package/feeds`: Symbolic links to packages in `sdk/feeds`.
 
-    *   `sdk/staging_dir/hostpkg`: Where host packages are installed.
-
-    *   `sdk/staging_dir/target`: Headers and other supporting files
-        installed by target library packages, for use when compiling
-        other target packages.
+    *   `sdk/staging_dir`: Supporting files installed by host and target
+        packages, for use when compiling other target packages.
 
     *   `sdk/tmp`: Temporary files.
 
-    There are also two "special" subdirectories:
+    Subdirectories with "special" functionality:
 
     *   `sdk/overrides`: Files placed here will be copied into the SDK
         directory in the builder container, allowing files to be
@@ -150,31 +147,24 @@ command line.
         directory, it will be copied to `.config` inside the builder
         container, which will then be expanded by `make defconfig`.
 
-    *   `sdk/sdk`: SDK archives can be saved here to speed up the local
-        Docker image build.
-
-        If there is an SDK archive in this directory that matches the
-        `SDK_FILE` [image build option](#image-build-options), then it
-        will be used instead of downloading the archive from `SDK_HOST`.
-
-        If the `KEEP_SDK_FILE` [run-time option](#run-time-options) is
-        enabled, then when the builder is run, the SDK archive saved
-        inside the Docker image will be copied into this directory.
-
 ## Configuration
 
 All options can be found in the `docker-compose.yml` file.
 
 ### Image build options
 
-*   `SDK_HOST`, `SDK_PATH`, `SDK_FILE`: Which SDK to use.
+*   `CONTAINER`, `TAG`: Which SDK image to use.
 
-    If there is an SDK archive (matching `SDK_FILE`) in the `sdk/sdk`
-    directory, then it will be used instead of downloading the archive
-    from `SDK_HOST`.
+    SDK image tags are in the [format][OpenWrt SDK Docker image tag
+    format]:
+
+        <target>-<subtarget>-<branch|tag|version>
+
+    Available tags can be found at [Docker Hub][OpenWrt SDK Docker image
+    tags].
 
 *   `BRANCH`: Which branch to use when setting up package feeds, e.g.
-    `master`, `openwrt-18.06`, etc.
+    `master`, `openwrt-22.03`, etc.
 
 *   `CUSTOM_FEED`: Controls how the `packages` directory is used:
     *   `n`: The directory is added as the "packages" feed, in
@@ -183,27 +173,18 @@ All options can be found in the `docker-compose.yml` file.
         feed][OpenWrt custom feeds] (the OpenWrt packages feed will be
         present as well).
 
+[OpenWrt SDK Docker image tag format]: https://github.com/openwrt/docker#sdk-tags
+[OpenWrt SDK Docker image tags]: https://hub.docker.com/r/openwrt/sdk/tags
 [OpenWrt custom feeds]: https://openwrt.org/docs/guide-developer/feeds#custom_feeds
 
 ### Run-time options
-
-*   `KEEP_SDK_FILE`: If `y`, the SDK archive within the Docker image will
-    be copied to the `sdk/sdk` directory when the builder is run.
 
 *   `CONFIG_AUTOREMOVE`, `CONFIG_BUILD_LOG`: Sets the corresponding SDK
     config options (`y` or `n`).
 
 ## Rebuild local Docker image
 
-The local Docker image can be rebuilt to change SDKs or update to the
-latest snapshot SDK.
-
-If `KEEP_SDK_FILE` is `y`, it may be necessary clear the `sdk/sdk`
-directory first to ensure a new SDK archive is downloaded:
-
-    $ rm -f sdk/sdk/*
-
-Then rebuild the image:
+The local Docker image can be rebuilt to update or change the SDK used:
 
     $ sudo docker-compose build
 

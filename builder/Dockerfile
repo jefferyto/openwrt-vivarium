@@ -18,26 +18,19 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-FROM docker.io/openwrtorg/packages-cci:v1.0.7
+ARG CONTAINER
+ARG TAG
 
-ARG SDK_HOST
-ARG SDK_PATH
-ARG SDK_FILE
+FROM $CONTAINER:$TAG
+
 ARG BRANCH
 ARG CUSTOM_FEED
 
-ENV SDK_HOST=$SDK_HOST
-ENV SDK_PATH=$SDK_PATH
-ENV SDK_FILE=$SDK_FILE
 ENV BRANCH=$BRANCH
 ENV CUSTOM_FEED=$CUSTOM_FEED
 
-WORKDIR /home/build
+COPY builder/docker-run.sh builder/docker-entrypoint.sh /vivarium/
 
-COPY builder/docker-run.sh sdk/sdk/$SDK_FILE /
+RUN sh -e /vivarium/docker-run.sh
 
-RUN sh -e /docker-run.sh
-
-COPY builder/docker-entrypoint.sh /
-
-ENTRYPOINT [ "sh", "-e", "/docker-entrypoint.sh" ]
+ENTRYPOINT [ "sh", "-e", "/vivarium/docker-entrypoint.sh" ]
