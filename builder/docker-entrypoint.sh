@@ -48,13 +48,28 @@ if [ "$USE_GITHUB_FEEDS" = y ]; then
 fi
 echo "src-link custom /vivarium/packages" >> feeds.conf
 
-sed -i \
-	-e "/\s*config AUTOREMOVE$/{n;n;s/default [yn]/default ${CONFIG_AUTOREMOVE:-y}/}" \
-	-e "/\s*config BUILD_LOG$/{n;n;s/default [yn]/default ${CONFIG_BUILD_LOG:-n}/}" \
-	Config.in
-
 if [ -d /vivarium/overrides ]; then
 	cp -fpr /vivarium/overrides/. ./
+fi
+
+if [ ! -e .config ]; then
+	touch .config
+
+	if [ "$CONFIG_AUTOREMOVE" = y ]; then
+		echo "CONFIG_AUTOREMOVE=y" >> .config
+	else
+		echo "# CONFIG_AUTOREMOVE is not set" >> .config
+	fi
+
+	if [ "$CONFIG_BUILD_LOG" = y ]; then
+		echo "CONFIG_BUILD_LOG=y" >> .config
+	else
+		echo "# CONFIG_BUILD_LOG is not set" >> .config
+	fi
+
+	if [ -f diffconfig ]; then
+		cat diffconfig >> .config
+	fi
 fi
 
 mkdir -p logs
@@ -62,10 +77,6 @@ mkdir -p logs
 cp -f feeds.conf logs/feeds.conf
 ./scripts/feeds update -a
 ./scripts/feeds install -a
-
-if [ -f diffconfig ]; then
-	cp -f diffconfig .config
-fi
 
 make defconfig
 cp -f .config logs/config
