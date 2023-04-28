@@ -53,8 +53,8 @@ sed -i \
 	-e "/\s*config BUILD_LOG$/{n;n;s/default [yn]/default ${CONFIG_BUILD_LOG:-n}/}" \
 	Config.in
 
-if [ -d /vivarium/overrides ] && [ -n "$(find /vivarium/overrides -mindepth 1 -maxdepth 1 \! -path '*/.*' -name '*' -print -quit)" ]; then
-	cp -fpr /vivarium/overrides/* ./
+if [ -d /vivarium/overrides ]; then
+	cp -fpr /vivarium/overrides/. ./
 fi
 
 mkdir -p logs
