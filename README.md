@@ -18,10 +18,10 @@ mounts, allowing access to package source code from the Docker container
 and access to build artifacts from the host machine.
 
 [OpenWrt]: https://openwrt.org/
-[OpenWrt build system install]: https://openwrt.org/docs/guide-developer/build-system/install-buildsystem
+[OpenWrt build system install]: https://openwrt.org/docs/guide-developer/toolchain/install-buildsystem
 [Docker]: https://www.docker.com/
 [OpenWrt SDK Docker image]: https://github.com/openwrt/docker#sdk
-[OpenWrt SDK]: https://openwrt.org/docs/guide-developer/using_the_sdk
+[OpenWrt SDK]: https://openwrt.org/docs/guide-developer/toolchain/using_the_sdk
 
 ## Requirements
 
@@ -35,48 +35,51 @@ necessary.
 Vivarium has only been tested with Linux (Ubuntu 19.04, to be exact).
 Testing with other platforms is welcome.
 
-[Docker install]: https://docs.docker.com/install/#supported-platforms
+[Docker install]: https://docs.docker.com/get-docker/
 [Docker Compose install]: https://docs.docker.com/compose/install/
 [Docker get started]: https://docs.docker.com/get-started/
-[Openwrt build system usage]: https://openwrt.org/docs/guide-developer/build-system/use-buildsystem
+[OpenWrt build system usage]: https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem
 
 ## Getting started
 
-1.  Download the [latest release][Vivarium latest release] and extract,
-    e.g.:
-
-        $ unzip openwrt-vivarium-0.1.4.zip
+1.  Download the [latest release][Vivarium latest release] and extract.
 
     If you will be using Git to manage your package source code, then
     you will want to download Vivarium without Git to avoid nesting Git
     repositories.
 
-2.  Add any custom packages into the `packages` directory.
+2.  Change the `TAG` build option in `docker-compose.yml` to select
+    which SDK image to use.
+
+    Other options can be customized in `docker-compose.yml`; see
+    [Configuration].
+
+3.  Add any custom packages into the `packages` directory.
 
     The `packages` directory will be added as a [custom feed][OpenWrt
     custom feeds].
 
-3.  Build the local Docker image:
+4.  Build the local "builder" Docker image:
 
         $ sudo docker-compose build
 
-4.  Set the appropriate ownership for subdirectories inside the `sdk`
+5.  Set the appropriate ownership for subdirectories inside the `sdk`
     directory:
 
         $ sudo docker-compose run --rm --user root --entrypoint sh builder -e /vivarium/set-ownership.sh
 
-5.  Build packages by using `docker-compose run`, e.g.:
+6.  Build packages by using `docker-compose run`, e.g.:
 
-        $ sudo docker-compose run --rm builder make package/python/compile V=s
+        $ sudo docker-compose run --rm builder make package/slide-switch/compile V=s
 
-    If the build was successful, the compiled package(s) will be in the
+    If the build was successful, the compiled packages will be in the
     `sdk/bin` directory.
 
 If you are using an older version of Docker (<1.13.0) or Docker Compose
 (<1.10.0), you will need to change `version` in `docker-compose.yml`
-from `"3"` to `"2"` after Step 2. Vivarium has not been tested with
-these older versions though; upgrading to the latest versions of Docker
-and Docker Compose is recommended.
+from `"3"` to `"2"`. Vivarium has not been tested with these older
+versions though; upgrading to the latest versions of Docker and Docker
+Compose is recommended.
 
 During each builder run, these SDK commands:
 
@@ -88,6 +91,7 @@ will be run before the command specified on the `docker-compose run`
 command line.
 
 [Vivarium latest release]: https://github.com/jefferyto/openwrt-vivarium/releases/latest
+[Configuration]: #configuration
 [OpenWrt custom feeds]: https://openwrt.org/docs/guide-developer/feeds#custom_feeds
 
 ## Directory structure
@@ -161,11 +165,10 @@ All options can be found in the `docker-compose.yml` file.
 
 ## Rebuild local Docker image
 
-The local Docker image can be rebuilt to update or change the SDK used:
+The local "builder" Docker image can be rebuilt to update or change the
+SDK used:
 
     $ sudo docker-compose build
-
-The `--no-cache` option may be needed to force a rebuild / re-download.
 
 ## Directory cleaning
 
