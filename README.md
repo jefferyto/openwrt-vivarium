@@ -56,12 +56,9 @@ Testing with other platforms is welcome.
     The `packages` directory will be added as a [custom feed][OpenWrt
     custom feeds].
 
-3.  (Optional) Build the local Docker image:
+3.  Build the local Docker image:
 
         $ sudo docker-compose build
-
-    This is optional because Docker Compose will automatically build
-    the image when necessary.
 
 4.  Set the appropriate ownership for subdirectories inside the `sdk`
     directory:
