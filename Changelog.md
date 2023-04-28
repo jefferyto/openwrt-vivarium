@@ -8,6 +8,7 @@
 * Use default feeds.conf from the SDK
 * Always add `packages` as a custom feed
 * Add `USE_GITHUB_FEEDS` run-time option
+* Add script to set ownership of bind mounts
 
 ## [0.1.4] - 2022-05-30
 * Update to v1.0.7 of the packages-cci Docker image (includes public

@@ -56,25 +56,17 @@ Testing with other platforms is welcome.
     The `packages` directory will be added as a [custom feed][OpenWrt
     custom feeds].
 
-3.  If you are using Linux and your user ID is not 1000, you will need
-    to change the ownership of the `packages` and `sdk` directories (and
-    all files and subdirectories inside) to UID 1000, e.g.:
-
-        $ sudo chown -R 1000:1000 packages sdk
-
-    These directories need to be readable and writable by the normal
-    user inside the builder container (with UID 1000 / GID 1000).
-
-    To check your user ID, you can use the `id` command:
-
-        $ id -u
-
-4.  (Optional) Build the local Docker image:
+3.  (Optional) Build the local Docker image:
 
         $ sudo docker-compose build
 
     This is optional because Docker Compose will automatically build
     the image when necessary.
+
+4.  Set the appropriate ownership for subdirectories inside the `sdk`
+    directory:
+
+        $ sudo docker-compose run --rm --user root --entrypoint sh builder -e /vivarium/set-ownership.sh
 
 5.  Build packages by using `docker-compose run`, e.g.:
 

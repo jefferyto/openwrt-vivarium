@@ -1,5 +1,6 @@
+#!/bin/sh -e
 #
-# Dockerfile
+# set-ownership.sh
 # This file is part of Vivarium.
 #
 # Copyright (C) 2019 Jeffery To
@@ -18,13 +19,12 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-ARG CONTAINER
-ARG TAG
-
-FROM $CONTAINER:$TAG
-
-COPY builder/. /vivarium/
-
-RUN sh -e /vivarium/docker-run.sh
-
-ENTRYPOINT [ "sh", "-e", "/vivarium/docker-entrypoint.sh" ]
+chown -R --reference=. \
+	bin \
+	build_dir \
+	dl \
+	feeds \
+	logs \
+	package/feeds \
+	staging_dir \
+	tmp
