@@ -19,11 +19,6 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-#
-# Contains code from .circleci/config.yml of the OpenWrt packages feed
-# Copyright (C) 2018 Etienne Champetier, Ted Hess
-#
-
 mv build_dir build_dir_default
 
 mv staging_dir staging_dir_working

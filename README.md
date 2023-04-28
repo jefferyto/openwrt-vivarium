@@ -204,6 +204,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
-
-Contains code from .circleci/config.yml of the OpenWrt packages feed  
-Copyright (C) 2018 Etienne Champetier, Ted Hess
