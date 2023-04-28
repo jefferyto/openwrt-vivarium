@@ -51,12 +51,10 @@ Testing with other platforms is welcome.
     you will want to download Vivarium without Git to avoid nesting Git
     repositories.
 
-2.  In the project directory, create a `packages` directory and add
-    source code for packages, e.g. by checking out the OpenWrt packages
-    feed:
+2.  Add any custom packages into the `packages` directory.
 
-        $ cd openwrt-vivarium-0.1.4
-        $ git clone https://github.com/openwrt/packages.git
+    The `packages` directory will be added as a [custom feed][OpenWrt
+    custom feeds].
 
 3.  If you are using Linux and your user ID is not 1000, you will need
     to change the ownership of the `packages` and `sdk` directories (and
@@ -101,17 +99,13 @@ will be run before the command specified on the `docker-compose run`
 command line.
 
 [Vivarium latest release]: https://github.com/jefferyto/openwrt-vivarium/releases/latest
+[OpenWrt custom feeds]: https://openwrt.org/docs/guide-developer/feeds#custom_feeds
 
 ## Directory structure
 
 *   `builder`: Files that define the local "builder" Docker image.
 
-*   `packages`: Package source code. (This directory must be created
-    locally.)
-
-    This directory will be added either as the "packages" feed or as a
-    custom feed, depending on the `CUSTOM_FEED` [image build
-    option](#image-build-options).
+*   `packages`: Source code for custom packages (added manually).
 
 *   `sdk`: Subdirectories in here are bind mounted into various places
     within the SDK inside the builder container, to cache results and
@@ -163,21 +157,15 @@ All options can be found in the `docker-compose.yml` file.
     Available tags can be found at [Docker Hub][OpenWrt SDK Docker image
     tags].
 
-*   `BRANCH`: Which branch to use when setting up package feeds, e.g.
-    `master`, `openwrt-22.03`, etc.
-
-*   `CUSTOM_FEED`: Controls how the `packages` directory is used:
-    *   `n`: The directory is added as the "packages" feed, in
-        place of the [OpenWrt packages feed].
-    *   `y`: The directory is added as a [custom
-        feed][OpenWrt custom feeds] (the OpenWrt packages feed will be
-        present as well).
-
 [OpenWrt SDK Docker image tag format]: https://github.com/openwrt/docker#sdk-tags
 [OpenWrt SDK Docker image tags]: https://hub.docker.com/r/openwrt/sdk/tags
-[OpenWrt custom feeds]: https://openwrt.org/docs/guide-developer/feeds#custom_feeds
 
 ### Run-time options
+
+*   `USE_GITHUB_FEEDS`: Clone package feeds from GitHub instead of
+    git.openwrt.org (`y` or `n`).
+
+    Cloning from GitHub will likely be faster.
 
 *   `CONFIG_AUTOREMOVE`, `CONFIG_BUILD_LOG`: Sets the corresponding SDK
     config options (`y` or `n`).

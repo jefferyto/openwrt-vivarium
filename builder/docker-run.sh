@@ -33,14 +33,3 @@ for path in staging_dir_working/target-*; do
 	mv "$path" staging_dir_default/
 	ln -s "../staging_dir/${path##*/}" "$path"
 done
-
-echo "src-git-full base https://github.com/openwrt/openwrt.git;$BRANCH" > feeds.conf
-if [ "$CUSTOM_FEED" = y ]; then
-	echo "src-git-full packages https://github.com/openwrt/packages.git;$BRANCH" >> feeds.conf
-	echo "src-link custom /vivarium/packages" >> feeds.conf
-else
-	echo "src-link packages /vivarium/packages" >> feeds.conf
-fi
-echo "src-git-full luci https://github.com/openwrt/luci.git;$BRANCH" >> feeds.conf
-
-cat feeds.conf

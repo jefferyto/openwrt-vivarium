@@ -32,26 +32,16 @@ services:
         CONTAINER: openwrt/sdk
         TAG: ath79-generic-v22.03.4
 
-        # Which branch to use when setting up package feeds,
-        # e.g. master, openwrt-22.03, etc.
-        BRANCH: openwrt-22.03
-
-        # Controls how the "packages" directory is used
-        # - n: The directory is added as the "packages" feed, in place
-        #      of the OpenWrt packages feed
-        # - y: The directory is added as a custom feed (the OpenWrt
-        #      packages feed will be present as well)
-        CUSTOM_FEED: n
-
     environment:
+      # Clone package feeds from GitHub instead of git.openwrt.org (y or n)
+      USE_GITHUB_FEEDS: y
+
       # Sets the corresponding config options (y or n)
       CONFIG_AUTOREMOVE: y
       CONFIG_BUILD_LOG: n
 
     volumes:
-      # Where modified/custom packages should be placed;
-      # if CUSTOM_FEED is n, this should be a copy of the OpenWrt
-      # packages feed (https://github.com/openwrt/packages)
+      # Where custom packages should be placed
       - "./packages:/vivarium/packages"
 
       # Contains build artifacts

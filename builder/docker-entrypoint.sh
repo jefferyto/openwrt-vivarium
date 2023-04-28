@@ -38,6 +38,16 @@ for path in staging_dir_working/host staging_dir_working/toolchain-*; do
 	fi
 done
 
+cp feeds.conf.default feeds.conf
+if [ "$USE_GITHUB_FEEDS" = y ]; then
+	sed \
+		-e 's,https://git.openwrt.org/feed/,https://github.com/openwrt/,' \
+		-e 's,https://git.openwrt.org/openwrt/,https://github.com/openwrt/,' \
+		-e 's,https://git.openwrt.org/project/,https://github.com/openwrt/,' \
+		-i feeds.conf
+fi
+echo "src-link custom /vivarium/packages" >> feeds.conf
+
 sed -i \
 	-e "/\s*config AUTOREMOVE$/{n;n;s/default [yn]/default ${CONFIG_AUTOREMOVE:-y}/}" \
 	-e "/\s*config BUILD_LOG$/{n;n;s/default [yn]/default ${CONFIG_BUILD_LOG:-n}/}" \
@@ -47,6 +57,9 @@ if [ -d /vivarium/overrides ] && [ -n "$(find /vivarium/overrides -mindepth 1 -m
 	cp -fpr /vivarium/overrides/* ./
 fi
 
+mkdir -p logs
+
+cp -f feeds.conf logs/feeds.conf
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
@@ -55,8 +68,6 @@ if [ -f diffconfig ]; then
 fi
 
 make defconfig
-
-mkdir -p logs
 cp -f .config logs/config
 
 if [ "$#" -gt 0 ]; then

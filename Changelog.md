@@ -5,7 +5,9 @@
 * Replace bind mounts for `sdk/staging_dir/hostpkg` and
   `sdk/staging_dir/target` with one bind mount for `sdk/staging_dir`
 * Change bind mount destination paths for `packages` and `sdk/overrides`
-* Use `src-git-full` instead of `src-git` in feeds.conf
+* Use default feeds.conf from the SDK
+* Always add `packages` as a custom feed
+* Add `USE_GITHUB_FEEDS` run-time option
 
 ## [0.1.4] - 2022-05-30
 * Update to v1.0.7 of the packages-cci Docker image (includes public

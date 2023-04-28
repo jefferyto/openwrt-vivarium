@@ -23,12 +23,6 @@ ARG TAG
 
 FROM $CONTAINER:$TAG
 
-ARG BRANCH
-ARG CUSTOM_FEED
-
-ENV BRANCH=$BRANCH
-ENV CUSTOM_FEED=$CUSTOM_FEED
-
 COPY builder/docker-run.sh builder/docker-entrypoint.sh /vivarium/
 
 RUN sh -e /vivarium/docker-run.sh
