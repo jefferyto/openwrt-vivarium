@@ -32,8 +32,8 @@ Some familiarity with [Docker][Docker get started] and the OpenWrt
 [build system][OpenWrt build system usage] / [SDK][OpenWrt SDK] will be
 necessary.
 
-Vivarium has only been tested with Linux (Ubuntu 19.04, to be exact).
-Testing with other platforms is welcome.
+Vivarium has only been tested with Ubuntu Linux. Testing with other
+platforms is welcome.
 
 [Docker install]: https://docs.docker.com/get-docker/
 [Docker Compose install]: https://docs.docker.com/compose/install/
