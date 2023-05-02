@@ -10,6 +10,7 @@
 * Always add `packages` as a custom feed
 * Add `USE_GITHUB_FEEDS` run-time option
 * Add script to set ownership of bind mounts
+* Update clean scripts to be run inside builder container
 * Fix config options not set correctly
 
 ## [0.1.4] - 2022-05-30

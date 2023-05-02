@@ -170,15 +170,22 @@ SDK used:
 
     $ sudo docker-compose build
 
-## Directory cleaning
+## Cleaning up
 
-The SDK commands for directory cleaning (`make clean`, `make dirclean`,
-etc.) are not aware of the Docker bind mounts and so may not work
+The [SDK clean targets][OpenWrt SDK clean targets] (`make clean`, `make
+dirclean`) are not aware of the Docker bind mounts and so will not work
 correctly.
 
-There are scripts in the `sdk` directory (`clean.sh`, `dirclean.sh`,
-`distclean.sh`) that emulate the SDK commands and can be run from the
-host.
+Included are scripts that emulate these SDK commands:
+
+    $ sudo docker-compose run --rm --entrypoint /vivarium/clean.sh builder
+
+Available scripts:
+
+*   `/vivarium/clean.sh`: Clears `sdk/bin`, `sdk/build_dir`, and `sdk/staging_dir`
+*   `/vivarium/dirclean.sh`: Clears all subdirectories in `sdk`
+
+[OpenWrt SDK clean targets]: https://github.com/openwrt/openwrt/blob/cf8d861978dbfdb572a25db460db464b50d9e809/target/sdk/files/Makefile#L42-L50
 
 ## License
 

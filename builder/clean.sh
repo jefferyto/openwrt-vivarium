@@ -19,6 +19,6 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-[ "${0%/*}" = . ] || exit 1
-
-rm -fr build_dir/target-* staging_dir/target-* bin/* logs/*
+rm -fr bin/*
+rm -fr build_dir/*
+rm -fr staging_dir/*
