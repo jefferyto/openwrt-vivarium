@@ -66,7 +66,7 @@ Testing with other platforms is welcome.
 5.  Set the appropriate ownership for subdirectories inside the `sdk`
     directory:
 
-        $ sudo docker-compose run --rm --user root --entrypoint sh builder -e /vivarium/set-ownership.sh
+        $ sudo docker-compose run --rm --user root --entrypoint /vivarium/set-ownership.sh builder
 
 6.  Build packages by using `docker-compose run`, e.g.:
 

@@ -29,8 +29,8 @@ ARG TAG
 ENV CONTAINER=$CONTAINER
 ENV TAG=$TAG
 
-COPY builder/. /vivarium/
+COPY --chmod=755 builder/*.sh /vivarium/
 
-RUN sh -e /vivarium/docker-run.sh
+RUN ["/vivarium/docker-run.sh"]
 
-ENTRYPOINT [ "sh", "-e", "/vivarium/docker-entrypoint.sh" ]
+ENTRYPOINT ["/vivarium/docker-entrypoint.sh"]
