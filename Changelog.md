@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.5-dev][Unreleased] - Unreleased
+## [0.2.0] - 2023-05-02
 * Switch to the openwrt/sdk Docker image
 * Ensure build artifacts from different SDK images do not conflict
 * Replace bind mounts for `sdk/staging_dir/hostpkg` and
@@ -32,7 +32,7 @@
 * Initial release
 
 
-[Unreleased]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.4...main
+[0.2.0]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.4...0.2.0
 [0.1.4]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.3...0.1.4
 [0.1.3]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.2...0.1.3
 [0.1.2]: https://github.com/jefferyto/openwrt-vivarium/compare/0.1.1...0.1.2
