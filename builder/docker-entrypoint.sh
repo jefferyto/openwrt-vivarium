@@ -19,22 +19,32 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-mkdir -p build_dir
-for path in build_dir_default/*; do
-	if [ ! -e "build_dir/${path##*/}" ]; then
-		cp -pr "$path" build_dir/
-	fi
-done
+container=$(echo "$CONTAINER" | tr '/' '-')
+tag=$(echo "$TAG" | tr '/' '-')
 
-mkdir -p staging_dir/hostpkg
-for path in staging_dir_default/*; do
-	if [ ! -e "staging_dir/${path##*/}" ]; then
-		cp -pr "$path" staging_dir/
-	fi
-done
+setup_dir() {
+	local dir="$1"
+	local path
+	local name
+
+	mkdir -p "$dir"
+	for path in "${dir}_default"/*; do
+		name="${path##*/}"
+		if [ ! -e "$dir/${name}_${container}_$tag" ]; then
+			cp -pr "$path" "$dir/${name}_${container}_$tag"
+		fi
+		ln -fsT "${name}_${container}_$tag" "$dir/$name"
+	done
+}
+
+setup_dir bin
+setup_dir build_dir
+setup_dir staging_dir
+
 for path in staging_dir_working/host staging_dir_working/toolchain-*; do
-	if [ ! -e "staging_dir/${path##*/}" ]; then
-		ln -s "../staging_dir_working/${path##*/}" "staging_dir/${path##*/}"
+	name="${path##*/}"
+	if [ ! -e "staging_dir/$name" ]; then
+		ln -s "../staging_dir_working/$name" "staging_dir/$name"
 	fi
 done
 

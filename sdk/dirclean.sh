@@ -23,4 +23,4 @@
 
 . ./clean.sh
 
-rm -fr build_dir/hostpkg staging_dir/hostpkg/*
+rm -fr build_dir/hostpkg* staging_dir/hostpkg*

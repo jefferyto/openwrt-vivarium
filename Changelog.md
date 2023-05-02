@@ -2,6 +2,7 @@
 
 ## [0.1.5-dev][Unreleased] - Unreleased
 * Switch to the openwrt/sdk Docker image
+* Ensure build artifacts from different SDK images do not conflict
 * Replace bind mounts for `sdk/staging_dir/hostpkg` and
   `sdk/staging_dir/target` with one bind mount for `sdk/staging_dir`
 * Change bind mount destination paths for `packages` and `sdk/overrides`

@@ -19,12 +19,15 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+mkdir -p bin_default/packages bin_default/targets
+
+mkdir -p build_dir/hostpkg
 mv build_dir build_dir_default
 
-mv staging_dir staging_dir_working
 mkdir staging_dir_default
-ln -s ../staging_dir/hostpkg staging_dir_working/
-for path in staging_dir_working/target-*; do
+mkdir -p staging_dir/hostpkg
+mv staging_dir staging_dir_working
+for path in staging_dir_working/hostpkg staging_dir_working/target-*; do
 	mv "$path" staging_dir_default/
 	ln -s "../staging_dir/${path##*/}" "$path"
 done

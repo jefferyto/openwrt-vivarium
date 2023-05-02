@@ -23,6 +23,12 @@ ARG TAG
 
 FROM $CONTAINER:$TAG
 
+ARG CONTAINER
+ARG TAG
+
+ENV CONTAINER=$CONTAINER
+ENV TAG=$TAG
+
 COPY builder/. /vivarium/
 
 RUN sh -e /vivarium/docker-run.sh
