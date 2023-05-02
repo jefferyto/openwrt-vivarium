@@ -19,42 +19,78 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-cd $HOME
+container=$(echo "$CONTAINER" | tr '/' '-')
+tag=$(echo "$TAG" | tr '/' '-')
 
-if [ "$KEEP_SDK_FILE" = y ] && [ -d sdk ]; then
-	cp -np $SDK_FILE sdk/
-fi
+setup_dir() {
+	local dir="$1"
+	local path
+	local name
 
-cd build_dir
+	mkdir -p "$dir"
+	for path in "${dir}_default"/*; do
+		name="${path##*/}"
+		if [ ! -e "$dir/${name}_${container}_$tag" ]; then
+			cp -pr "$path" "$dir/${name}_${container}_$tag"
+		fi
+		ln -fsT "${name}_${container}_$tag" "$dir/$name"
+	done
+}
 
-mkdir -p build_dir
-for path in build_dir_default/*; do
-	if [ ! -d build_dir/$(basename $path) ]; then
-		cp -pr $path build_dir/
+setup_dir bin
+setup_dir build_dir
+setup_dir staging_dir
+
+for path in staging_dir_working/host staging_dir_working/toolchain-*; do
+	name="${path##*/}"
+	if [ ! -e "staging_dir/$name" ]; then
+		ln -s "../staging_dir_working/$name" "staging_dir/$name"
 	fi
 done
 
-sed -i \
-	-e "/\s*config AUTOREMOVE$/{n;n;s/default [yn]/default ${CONFIG_AUTOREMOVE:-y}/}" \
-	-e "/\s*config BUILD_LOG$/{n;n;s/default [yn]/default ${CONFIG_BUILD_LOG:-n}/}" \
-	Config.in
+cp feeds.conf.default feeds.conf
+if [ "$USE_GITHUB_FEEDS" = y ]; then
+	sed \
+		-e 's,https://git.openwrt.org/feed/,https://github.com/openwrt/,' \
+		-e 's,https://git.openwrt.org/openwrt/,https://github.com/openwrt/,' \
+		-e 's,https://git.openwrt.org/project/,https://github.com/openwrt/,' \
+		-i feeds.conf
+fi
+echo "src-link custom /vivarium/packages" >> feeds.conf
 
-if [ -d ../overrides ] && [ -n "$(find ../overrides -mindepth 1 -maxdepth 1 \! -path '*/.*' -name '*' -print -quit)" ]; then
-	cp -fpr ../overrides/* ./
+if [ -d /vivarium/overrides ]; then
+	cp -fpr /vivarium/overrides/. ./
 fi
 
+if [ ! -e .config ]; then
+	touch .config
+
+	if [ "$CONFIG_AUTOREMOVE" = y ]; then
+		echo "CONFIG_AUTOREMOVE=y" >> .config
+	else
+		echo "# CONFIG_AUTOREMOVE is not set" >> .config
+	fi
+
+	if [ "$CONFIG_BUILD_LOG" = y ]; then
+		echo "CONFIG_BUILD_LOG=y" >> .config
+	else
+		echo "# CONFIG_BUILD_LOG is not set" >> .config
+	fi
+
+	if [ -f diffconfig ]; then
+		cat diffconfig >> .config
+	fi
+fi
+
+mkdir -p logs
+
+cp -f feeds.conf logs/feeds.conf
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
-if [ -f diffconfig ]; then
-	cp -f diffconfig .config
-fi
-
 make defconfig
-
-mkdir -p logs
 cp -f .config logs/config
 
-if [ $# -gt 0 ]; then
+if [ "$#" -gt 0 ]; then
 	"$@"
 fi

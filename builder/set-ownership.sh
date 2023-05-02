@@ -1,6 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh -ex
 #
-# distclean.sh
+# set-ownership.sh
 # This file is part of Vivarium.
 #
 # Copyright (C) 2019 Jeffery To
@@ -19,12 +19,12 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-[ "${0%/*}" = . ] || exit 1
-
-. ./dirclean.sh
-
-rm -rf feeds/* package/feeds/*
-rm -rf dl/* sdk/*
-rm -rf tmp/..?* tmp/.[!.]* tmp/*
-
-touch tmp/.gitkeep
+chown -R --reference=. \
+	bin \
+	build_dir \
+	dl \
+	feeds \
+	logs \
+	package/feeds \
+	staging_dir \
+	tmp

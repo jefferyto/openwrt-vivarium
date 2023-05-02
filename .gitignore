@@ -1,4 +1,5 @@
-/packages/
+/packages/*
+!/packages/.gitkeep
 
 /sdk/bin/*
 !/sdk/bin/.gitkeep
@@ -21,14 +22,8 @@
 /sdk/package/feeds/*
 !/sdk/package/feeds/.gitkeep
 
-/sdk/sdk/*
-!/sdk/sdk/.gitkeep
-
-/sdk/staging_dir/hostpkg/*
-!/sdk/staging_dir/hostpkg/.gitkeep
-
-/sdk/staging_dir/target/*
-!/sdk/staging_dir/target/.gitkeep
+/sdk/staging_dir/*
+!/sdk/staging_dir/.gitkeep
 
 /sdk/tmp/*
 !/sdk/tmp/.gitkeep

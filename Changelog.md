@@ -1,7 +1,17 @@
 # Changelog
 
 ## [0.1.5-dev][Unreleased] - Unreleased
-* Use `src-git-full` instead of `src-git` in feeds.conf
+* Switch to the openwrt/sdk Docker image
+* Ensure build artifacts from different SDK images do not conflict
+* Replace bind mounts for `sdk/staging_dir/hostpkg` and
+  `sdk/staging_dir/target` with one bind mount for `sdk/staging_dir`
+* Change bind mount destination paths for `packages` and `sdk/overrides`
+* Use default feeds.conf from the SDK
+* Always add `packages` as a custom feed
+* Add `USE_GITHUB_FEEDS` run-time option
+* Add script to set ownership of bind mounts
+* Update clean scripts to be run inside builder container
+* Fix config options not set correctly
 
 ## [0.1.4] - 2022-05-30
 * Update to v1.0.7 of the packages-cci Docker image (includes public

@@ -1,6 +1,6 @@
-#!/bin/sh -e
+#!/bin/sh -ex
 #
-# clean.sh
+# dirclean.sh
 # This file is part of Vivarium.
 #
 # Copyright (C) 2019 Jeffery To
@@ -19,6 +19,12 @@
 # along with Vivarium.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-[ "${0%/*}" = . ] || exit 1
+. /vivarium/clean.sh
 
-rm -rf build_dir/target-* staging_dir/target/* bin/* logs/*
+rm -fr dl/*
+rm -fr feeds/*
+rm -fr logs/*
+rm -fr package/feeds/*
+rm -fr tmp/..?* tmp/.[!.]* tmp/*
+
+touch tmp/.gitkeep
