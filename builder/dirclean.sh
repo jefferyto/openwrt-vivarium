@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -ex
 #
 # dirclean.sh
 # This file is part of Vivarium.

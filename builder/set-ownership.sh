@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -ex
 #
 # set-ownership.sh
 # This file is part of Vivarium.
