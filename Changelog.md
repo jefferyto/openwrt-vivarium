@@ -1,6 +1,7 @@
 # Changelog
 
 ## [0.2.1-dev][Unreleased] - Unreleased
+* Rename custom feed to "vivarium"
 
 ## [0.2.0] - 2023-05-02
 * Switch to the openwrt/sdk Docker image

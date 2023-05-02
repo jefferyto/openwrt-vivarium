@@ -56,7 +56,7 @@ if [ "$USE_GITHUB_FEEDS" = y ]; then
 		-e 's,https://git.openwrt.org/project/,https://github.com/openwrt/,' \
 		-i feeds.conf
 fi
-echo "src-link custom /vivarium/packages" >> feeds.conf
+echo "src-link vivarium /vivarium/packages" >> feeds.conf
 
 if [ -d /vivarium/overrides ]; then
 	cp -fpr /vivarium/overrides/. ./
