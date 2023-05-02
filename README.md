@@ -189,7 +189,7 @@ Available scripts:
 
 ## License
 
-Copyright (C) 2019 Jeffery To  
+Copyright (C) 2019, 2022-2023 Jeffery To  
 https://github.com/jefferyto/openwrt-vivarium
 
 Vivarium is free software: you can redistribute it and/or modify
