@@ -58,6 +58,12 @@ if [ "$USE_GITHUB_FEEDS" = y ]; then
 fi
 echo "src-link vivarium /vivarium/packages" >> feeds.conf
 
+mkdir -p logs
+
+cp -f feeds.conf logs/feeds.conf
+./scripts/feeds update -a
+./scripts/feeds install -a
+
 if [ -d /vivarium/overrides ]; then
 	cp -fpr /vivarium/overrides/. ./
 fi
@@ -81,12 +87,6 @@ if [ ! -e .config ]; then
 		cat diffconfig >> .config
 	fi
 fi
-
-mkdir -p logs
-
-cp -f feeds.conf logs/feeds.conf
-./scripts/feeds update -a
-./scripts/feeds install -a
 
 make defconfig
 cp -f .config logs/config
